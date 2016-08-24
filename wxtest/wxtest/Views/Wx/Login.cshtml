@@ -1,0 +1,64 @@
+﻿
+@{
+    Layout = null;
+}
+@{
+    wxtest.Common.WxHelper.WxUserInfo userinfo = ViewBag.userinfo as wxtest.Common.WxHelper.WxUserInfo;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>微信登录</title>
+</head>
+<body>
+    <div>登录成功</div>
+    <div>姓名 = @userinfo.Nickname</div>
+    @{
+        string sex = "";
+        switch (@userinfo.Sex)
+        {
+            case "1":
+                sex = "男";
+                break;
+            case "2":
+                sex = "女";
+                break;
+            case "0":
+            default:
+                sex = "未知";
+                break;
+        }
+    }
+    <div>性别 = @sex</div>
+    <div>
+        省份 = @userinfo.Province
+    </div>
+    <div>
+        城市 = @userinfo.City
+    </div>
+    <div>
+        国家 = @userinfo.Country
+    </div>
+    <div>
+        <div>
+            <img alt="wxHeadImg" src="@userinfo.Headimgurl" style="width:4em;" />
+        </div>
+        头像地址 = @userinfo.Headimgurl
+    </div>
+    <div>
+        特权数量 @userinfo.Privilege.Count
+        @foreach (string s in @userinfo.Privilege)
+        {
+            <div>@s</div>
+        }
+    </div>
+    <div>
+        Openid = @userinfo.Openid
+    </div>
+    <div>
+        Unionid = @userinfo.Unionid
+    </div>
+</body>
+</html>
