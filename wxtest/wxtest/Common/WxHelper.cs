@@ -16,14 +16,7 @@ namespace wxtest.Common
 
         System.Web.Script.Serialization.JavaScriptSerializer jss = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-        /// <summary>
-        /// 微信接入验证
-        /// </summary>
-        /// <param name="sSignature"></param>
-        /// <param name="sTimeStamp"></param>
-        /// <param name="sNonce"></param>
-        /// <param name="sToken"></param>
-        /// <returns></returns>
+        // 微信接入验证
         public bool Valid(string sSignature, string sTimeStamp, string sNonce)
         {
             List<string> list = new List<string>() { Token, sTimeStamp, sNonce };
@@ -40,12 +33,14 @@ namespace wxtest.Common
             }
         }
 
+        //微信登录链接
         public string GetLoginUrl(string encodeUri)
         {
             string link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope={2}&state=STATE#wechat_redirect";
             return string.Format(link, AppID, encodeUri, "snsapi_userinfo");
         }
 
+        //获取用户信息
         public WxUserInfo GetUserInfo(string code)
         {
             string url = string.Format("https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code", AppID, AppSecret, code);
@@ -57,7 +52,91 @@ namespace wxtest.Common
             return userinfo;
         }
 
-        private string GetSHA1(string text)
+        //获取JsApi_Ticket
+        public JsApi_Ticket GetJsApi_Ticket()
+        {
+            JsApi_Ticket ticket = new JsApi_Ticket() { Access_token = "", Ticket = "", Expires = DateTime.Now };
+            //获取Access_token
+            ticket.Access_token = GetAccess_Token();
+            if (string.IsNullOrEmpty(ticket.Access_token))
+            {
+                return ticket;
+            }
+            //获取Ticket
+            ticket.Ticket = GetJsApi_Ticket(ticket.Access_token);
+            if (string.IsNullOrEmpty(ticket.Ticket))
+            {
+                return ticket;
+            }
+            //设置过期时间
+            ticket.Expires = DateTime.Now.AddSeconds(6000);//微信jsapi_ticket 7200秒过期
+            return ticket;
+        }
+
+        //获取Access_Token
+        private string GetAccess_Token()
+        {
+            string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", AppID, AppSecret);
+            string s = GetWebRequest_Get(url);
+            Dictionary<string, string> dict = jss.Deserialize<Dictionary<string, string>>(s);
+            if (dict.ContainsKey("access_token"))
+            {
+                return dict["access_token"];
+            }
+            return "";
+        }
+
+        //获取JsApi_Ticket
+        private string GetJsApi_Ticket(string access_token)
+        {
+            string url = string.Format("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=jsapi", access_token);
+            string s = GetWebRequest_Get(url);
+            Dictionary<string, string> dict = jss.Deserialize<Dictionary<string, string>>(s);
+            if (dict.ContainsKey("ticket"))
+            {
+                return dict["ticket"];
+            }
+            return "";
+        }
+
+        //获取jsSDK签名算法
+        public string GetJsSignature(string noncestr, string jsapi_ticket, string timestamp, string url)
+        {
+            List<string> list = new List<string>() { "noncestr", "jsapi_ticket", "timestamp", "url" };
+            list.Sort();
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            //dict.Add(noncestr, "noncestr");
+            //dict.Add(jsapi_ticket, "jsapi_ticket");
+            //dict.Add(timestamp, "timestamp");
+            //dict.Add(url, "url");
+            dict.Add("noncestr", noncestr);
+            dict.Add("jsapi_ticket", jsapi_ticket);
+            dict.Add("timestamp", timestamp);
+            dict.Add("url", url);
+            StringBuilder strBld = new StringBuilder();
+            foreach (string s in list)
+            {
+                strBld.AppendFormat(@"{0}={1}&", s, dict[s]);
+            }
+            strBld.Remove(strBld.Length - 1, 1);
+            return GetSHA1(strBld.ToString());
+        }
+
+        //获取时间戳
+        public string GetTimestamp()
+        {
+            TimeSpan ts = DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt32(ts.TotalSeconds).ToString();
+        }
+
+        //获取随机字符串
+        public string GetNonceStr()
+        {
+            return DateTime.Now.ToString("yyyyMMddHHmmss");
+        }
+
+        //SHA1算法计算字符串
+        public string GetSHA1(string text)
         {
             System.Security.Cryptography.SHA1 sha1 = new System.Security.Cryptography.SHA1CryptoServiceProvider();
             byte[] secArr = sha1.ComputeHash(System.Text.Encoding.Default.GetBytes(text));
@@ -94,6 +173,13 @@ namespace wxtest.Common
             public string Headimgurl { get; set; } //用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。
             public List<string> Privilege { get; set; } //用户特权信息，json 数组，如微信沃卡用户为（chinaunicom）
             public string Unionid { get; set; }//只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。详见：获取用户个人信息（UnionID机制）
+        }
+
+        public class JsApi_Ticket
+        {
+            public string Access_token { get; set; }
+            public string Ticket { get; set; }
+            public DateTime Expires { get; set; }
         }
     }
 }

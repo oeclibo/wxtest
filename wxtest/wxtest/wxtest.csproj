@@ -90,6 +90,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Images\0.jpg" />
+    <Content Include="Images\images\0.jpg" />
+    <Content Include="Images\images\30914399819730891.jpg" />
+    <Content Include="Images\images\38394806875964533.jpg" />
+    <Content Include="Images\images\484979960726036633.jpg" />
+    <Content Include="Images\images\543356831054109775.jpg" />
+    <Content Include="Images\images\547948945112280575.jpg" />
+    <Content Include="Images\images\689350532904922449.jpg" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +118,9 @@
     <Content Include="Views\Wx\Index.cshtml" />
     <Content Include="Views\Wx\Login.cshtml" />
     <Content Include="Views\Wx\Valid.cshtml" />
+    <Content Include="Views\Wx\WebLogin.cshtml" />
+    <Content Include="Views\Wx\TestJs.cshtml" />
+    <Content Include="Views\Home\TestImg.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

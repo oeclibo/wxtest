@@ -10,8 +10,25 @@
     <title>Index</title>
 </head>
 <body>
-    <div>
-        <a href="@ViewBag.wxLoginUrl">授权微信登录</a>
-    </div>
+    <ul>
+        <li>
+            <a href="@ViewBag.wxLoginUrl">授权微信登录</a>
+        </li>
+
+        <li>
+            <div>
+                扫码关注测试号
+            </div>
+            <div>
+                <img alt="测试号二维码" src="~/Images/0.jpg" style="width:8em;" />
+            </div>
+        </li>
+        <li>
+            <a href="@Url.Action("WebLogin")">网页扫码登录</a>
+        </li>
+        <li>
+            <a href="@Url.Action("TestJs")">微信JS-SDK测试</a>
+        </li>
+    </ul>
 </body>
 </html>

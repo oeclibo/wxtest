@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+}
+@{ 
+    wxtest.Common.WxHelper helper = ViewBag.helper as wxtest.Common.WxHelper;
+    string appid = helper.AppID;
+    string encodeUri = ViewBag.encodeUri;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>WebLogin</title>
+    <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+</head>
+<body>
+    <div id="login_container"> 
+    </div>
+</body>
+</html>
+<script>
+    var obj = new WxLogin({
+        id: "login_container",
+        appid: "@appid",
+        scope: "snsapi_login",
+        redirect_uri: "@encodeUri",
+        style: "black"
+    });
+</script>
