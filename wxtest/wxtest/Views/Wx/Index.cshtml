@@ -10,24 +10,27 @@
     <title>Index</title>
 </head>
 <body>
+    <div>
+        请先关注测试号（长按识别二维码）
+    </div>
+    <div>
+        <img alt="测试号二维码" src="~/Images/0.jpg" style="width:8em;" />
+    </div>
     <ul>
         <li>
-            <a href="@ViewBag.wxLoginUrl">授权微信登录</a>
+            关注后可尝试下列功能
         </li>
-
         <li>
-            <div>
-                扫码关注测试号
-            </div>
-            <div>
-                <img alt="测试号二维码" src="~/Images/0.jpg" style="width:8em;" />
-            </div>
+            <a href="@ViewBag.wxLoginUrl">测试微信授权并拉取用户信息</a>
         </li>
         <li>
             <a href="@Url.Action("WebLogin")">网页扫码登录</a>
         </li>
         <li>
-            <a href="@Url.Action("TestJs")">微信JS-SDK测试</a>
+            <a href="@Url.Action("JsSDK")">微信JS-SDK测试</a>
+        </li>
+        <li>
+            <a href="@Url.Action("Menu")"> 微信测试号菜单管理</a>
         </li>
     </ul>
 </body>

@@ -1,0 +1,27 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MenuCreate</title>
+</head>
+<body>
+    <div>
+        创建菜单：@ViewBag.result
+    </div>
+    <div>
+        取消并重新关注以刷新公众号菜单（缓存时间可能在5分钟左右）
+    </div>
+    <div>
+        <img alt="测试号二维码" src="~/Images/0.jpg" style="width:8em;" />
+    </div>
+    <div>
+        <a href="@Url.Action("Menu")">返回菜单编辑</a>
+    </div>
+</body>
+</html>

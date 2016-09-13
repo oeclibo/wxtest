@@ -119,8 +119,10 @@
     <Content Include="Views\Wx\Login.cshtml" />
     <Content Include="Views\Wx\Valid.cshtml" />
     <Content Include="Views\Wx\WebLogin.cshtml" />
-    <Content Include="Views\Wx\TestJs.cshtml" />
+    <Content Include="Views\Wx\JsSDK.cshtml" />
     <Content Include="Views\Home\TestImg.cshtml" />
+    <Content Include="Views\Wx\Menu.cshtml" />
+    <Content Include="Views\Wx\MenuCreate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

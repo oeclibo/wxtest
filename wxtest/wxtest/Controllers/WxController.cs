@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using wxtest.Common;
 
 namespace wxtest.Controllers
 {
@@ -64,7 +66,7 @@ namespace wxtest.Controllers
             return View();
         }
 
-        public ActionResult TestJs()
+        public ActionResult JsSDK()
         {
             Common.WxHelper.JsApi_Ticket tickek = HttpContext.Application["jsapi_ticket"] as Common.WxHelper.JsApi_Ticket;
             //无票据或票据过期
@@ -83,35 +85,94 @@ namespace wxtest.Controllers
             string url = Request.Url.AbsoluteUri;
             string signature = helper.GetJsSignature(noncestr, tickek.Ticket, timestamp, url);
 
-            /*调试
-            List<string> list = new List<string>() { "noncestr", "jsapi_ticket", "timestamp", "url" };
-            list.Sort();
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            dict.Add("noncestr", noncestr);
-            dict.Add("jsapi_ticket", tickek.Ticket);
-            dict.Add("timestamp", timestamp);
-            dict.Add("url", url);
-            StringBuilder strBld = new StringBuilder();
-            foreach (string s in list)
-            {
-                strBld.AppendFormat("{0}={1}&", s, dict[s]);
-            }
-            strBld.Remove(strBld.Length - 1, 1);
-            string str1 = strBld.ToString();
-            string sha1 = helper.GetSHA1(str1);
-            ViewBag.str1 = str1;
-            ViewBag.sha1 = sha1;
-
-            ViewBag.url = url;
-            ViewBag.tickek = tickek;
-            */
-
             ViewBag.appId = appId;
             ViewBag.timestamp = timestamp;
             ViewBag.noncestr = noncestr;
             ViewBag.signature = signature;
+            return View();
+        }
 
+        public ActionResult MenuCreate(Common.WxHelper.wx_menu m)
+        {
+            Common.WxHelper.JsApi_Ticket tickek = HttpContext.Application["jsapi_ticket"] as Common.WxHelper.JsApi_Ticket;
+            //无票据或票据过期
+            if (tickek == null || tickek.Ticket == null || tickek.Ticket.Length == 0 || tickek.Expires < DateTime.Now)
+            {
+                tickek = helper.GetJsApi_Ticket();
+                if (string.IsNullOrEmpty(tickek.Ticket) || tickek.Expires < DateTime.Now)
+                {
+                    return RedirectToAction("Error", new { msg = "接口凭证不存在或已过期" });
+                }
+                HttpContext.Application.Add("jsapi_ticket", tickek);
+            }
+            wxtest.Common.WxHelper.wxmenu wxmenu = helper.ConverTowxmenu(m);
+            //var menu = GetMenu(wxmenu);
+            //string json = jss.Serialize(menu);
+            string json = jss.Serialize(wxmenu.menu);
+            bool result = helper.CreateMenu(tickek.Access_token, json);
+            ViewBag.result = result ? "操作成功" : "操作失败";
+            return View();
+        }
 
+        private object GetMenu(WxHelper.wxmenu wxmenu)
+        {
+            List<object> btns = new List<object>();
+            foreach (WxHelper.button button in wxmenu.menu.button)
+            {
+                if (button.sub_button == null || button.sub_button.Length == 0)
+                {
+                    switch (button.type)
+                    {
+                        case "click":
+                            btns.Add(new { type = button.type, name = button.name, key = button.key });
+                            break;
+                        case "view":
+                            btns.Add(new { type = button.type, name = button.name, url = button.url });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    List<object> sbtns = new List<object>();
+                    foreach (WxHelper.sub_button sub_button in button.sub_button)
+                    {
+                        switch (sub_button.type)
+                        {
+                            case "click":
+                                sbtns.Add(new { type = sub_button.type, name = sub_button.name, key = sub_button.key, sub_button = new object[] { } });
+                                break;
+                            case "view":
+                                sbtns.Add(new { type = sub_button.type, name = sub_button.name, url = sub_button.url, sub_button = new object[] { } });
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    btns.Add(new { name = button.name, sub_button = sbtns.ToArray() });
+                }
+            }
+            return new { button = btns.ToArray() };
+        }
+
+        public ActionResult Menu()
+        {
+            Common.WxHelper.JsApi_Ticket tickek = HttpContext.Application["jsapi_ticket"] as Common.WxHelper.JsApi_Ticket;
+            //无票据或票据过期
+            if (tickek == null || tickek.Ticket == null || tickek.Ticket.Length == 0 || tickek.Expires < DateTime.Now)
+            {
+                tickek = helper.GetJsApi_Ticket();
+                if (string.IsNullOrEmpty(tickek.Ticket) || tickek.Expires < DateTime.Now)
+                {
+                    return RedirectToAction("Error", new { msg = "接口凭证不存在或已过期" });
+                }
+                HttpContext.Application.Add("jsapi_ticket", tickek);
+            }
+            string json = helper.GetMenu(tickek.Access_token);
+            wxtest.Common.WxHelper.wxmenu wxmenu = jss.Deserialize<wxtest.Common.WxHelper.wxmenu>(json);
+            wxtest.Common.WxHelper.wx_menu wx_menu = helper.ConverTowx_menu(wxmenu);
+            ViewBag.wx_menu = wx_menu;
             return View();
         }
     }

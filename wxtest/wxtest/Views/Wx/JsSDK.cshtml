@@ -20,7 +20,7 @@ wxtest.Common.WxHelper.JsApi_Ticket tickek = ViewBag.tickek as wxtest.Common.WxH
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>TestJs</title>
+    <title>JsSDK</title>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <style>
@@ -60,10 +60,16 @@ wxtest.Common.WxHelper.JsApi_Ticket tickek = ViewBag.tickek as wxtest.Common.WxH
     <div>
         <ul>
             <li>
-                <a onclick="share()">分享到朋友圈</a>
+                <a onclick="share1()">分享到朋友圈（设置分享为百度）</a>
             </li>
             <li>
-                <a onclick="share2()">分享给好友</a>
+                <a onclick="share2()">分享到朋友圈（设置分享为自己）</a>
+            </li>
+            <li>
+                <a onclick="share3()">分享给好友（设置分享为百度）</a>
+            </li>
+            <li>
+                <a onclick="share4()">分享给好友（设置分享为自己）</a>
             </li>
             <li>
                 <a onclick="chooseImage()">选择图片</a>
@@ -122,11 +128,26 @@ wxtest.Common.WxHelper.JsApi_Ticket tickek = ViewBag.tickek as wxtest.Common.WxH
     function previewImage(img) {
         $(img).toggleClass("picliShow");
     }
-    function share() {
-        alert("分享到朋友圈");
+    function share1() {
+        wx.onMenuShareTimeline({
+            title: '百度', // 分享标题
+            link: 'http://www.baidu.com', // 分享链接
+            imgUrl: 'https://www.baidu.com/img/bd_logo1.png', // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                alert("成功分享到朋友圈");
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                alert("取消了分享");
+            }
+        });
+        alert("设置完成，分享到朋友圈看看吧");
+    }
+    function share2() {
         wx.onMenuShareTimeline({
             title: '测试', // 分享标题
-            link: 'http://class.sjtu-oec.com/sjtu/wxtest/wx/TestJs', // 分享链接
+            link: 'http://class.sjtu-oec.com/sjtu/wxtest/wx/JsSDK', // 分享链接
             imgUrl: '', // 分享图标
             success: function () {
                 // 用户确认分享后执行的回调函数
@@ -137,13 +158,32 @@ wxtest.Common.WxHelper.JsApi_Ticket tickek = ViewBag.tickek as wxtest.Common.WxH
                 alert("取消了分享");
             }
         });
+        alert("设置完成，分享到朋友圈看看吧");
     }
-    function share2() {
-        alert("分享给朋友");
+    function share3() {
+        wx.onMenuShareAppMessage({
+            title: '百度', // 分享标题
+            desc: '百度一下', // 分享描述
+            link: 'http://www.baidu.com', // 分享链接
+            imgUrl: 'https://www.baidu.com/img/bd_logo1.png', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                alert("成功分享给朋友");
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                alert("取消了分享");
+            }
+        });
+        alert("设置完成，发送给朋友们看看吧");
+    }
+    function share4() {
         wx.onMenuShareAppMessage({
             title: '测试', // 分享标题
             desc: '测试JS接口', // 分享描述
-            link: 'http://class.sjtu-oec.com/sjtu/wxtest/wx/TestJs', // 分享链接
+            link: 'http://class.sjtu-oec.com/sjtu/wxtest/wx/JsSDK', // 分享链接
             imgUrl: '', // 分享图标
             type: '', // 分享类型,music、video或link，不填默认为link
             dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -156,5 +196,6 @@ wxtest.Common.WxHelper.JsApi_Ticket tickek = ViewBag.tickek as wxtest.Common.WxH
                 alert("取消了分享");
             }
         });
+        alert("设置完成，发送给朋友们看看吧");
     }
 </script>

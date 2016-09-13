@@ -1,0 +1,234 @@
+﻿@{
+    Layout = null;
+    wxtest.Common.WxHelper.wx_menu m = ViewBag.wx_menu as wxtest.Common.WxHelper.wx_menu;
+}
+@{
+    List<SelectListItem> list = new List<SelectListItem>{
+             new SelectListItem { Text="触发事件", Value="click" } ,
+             new SelectListItem { Text="跳转链接", Value="view" }
+        };
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Menu</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+    <div>菜单设置</div>
+    <form method="post" target="_self" action="MenuCreate">
+        <fieldset>
+            <legend>
+                @Html.CheckBox("cbxEnable1", m.cbxEnable1, new { id = "cbxEnable1" });
+                @Html.Label("cbxEnable1", "启用菜单一");
+            </legend>
+            <ul>
+                <li>
+                    @Html.RadioButton("rdotp1", "0", m.rdotp1 == "0", new { id = "rdoisbtn1" })
+                    @Html.Label("rdoisbtn1", "作为功能键：");
+                    <ul>
+                        <li>
+                            按钮名称：
+                            @Html.TextBox("txtbtnName1", m.txtbtnName1);
+                            @Html.DropDownList("txtbtntp1", new SelectList(list, "value", "text", m.txtbtntp1));
+                            @Html.TextBox("txtbtnvalue1", m.txtbtnvalue1);
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    @Html.RadioButton("rdotp1", 1, m.rdotp1 == "1", new { id = "rdoismenu1" })
+                    @Html.Label("rdoismenu1", "作为父菜单：");
+                    <ul>
+                        <li>
+                            菜单名称：@Html.TextBox("txtmenuName1", m.txtmenuName1);
+                        </li>
+                        <li>
+                            子菜单(1)：
+                            菜单名称 @Html.TextBox("txtsubbtnName1", m.txtsubbtnName1);
+                            选择功能 @Html.DropDownList("txtsubbtntp1", new SelectList(list, "value", "text", m.txtsubbtntp1));
+                            @Html.TextBox("txtsubbtnvalue1", m.txtsubbtnvalue1);
+                        </li>
+                        <li>
+                            子菜单(2)：
+                            菜单名称 @Html.TextBox("txtsubbtnName2", m.txtsubbtnName2);
+                            选择功能 @Html.DropDownList("txtsubbtntp2", new SelectList(list, "value", "text", m.txtsubbtntp2));
+                            @Html.TextBox("txtsubbtnvalue2", m.txtsubbtnvalue2);
+                        </li>
+                        <li>
+                            子菜单(3)：
+                            菜单名称 @Html.TextBox("txtsubbtnName3", m.txtsubbtnName3);
+                            选择功能 @Html.DropDownList("txtsubbtntp3", new SelectList(list, "value", "text", m.txtsubbtntp3));
+                            @Html.TextBox("txtsubbtnvalue3", m.txtsubbtnvalue3);
+                        </li>
+                        <li>
+                            子菜单(4)：
+                            菜单名称 @Html.TextBox("txtsubbtnName4", m.txtsubbtnName4);
+                            选择功能 @Html.DropDownList("txtsubbtntp4", new SelectList(list, "value", "text", m.txtsubbtntp4));
+                            @Html.TextBox("txtsubbtnvalue4", m.txtsubbtnvalue4);
+                        </li>
+                        <li>
+                            子菜单(5)：
+                            菜单名称 @Html.TextBox("txtsubbtnName5", m.txtsubbtnName5);
+                            选择功能 @Html.DropDownList("txtsubbtntp5", new SelectList(list, "value", "text", m.txtsubbtntp5));
+                            @Html.TextBox("txtsubbtnvalue5", m.txtsubbtnvalue5);
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>
+                @Html.CheckBox("cbxEnable2", m.cbxEnable2, new { id = "cbxEnable2" });
+                @Html.Label("cbxEnable2", "启用菜单二");
+            </legend>
+            <ul>
+                <li>
+                    @Html.RadioButton("rdotp2", 0, m.rdotp2 == "0", new { id = "rdoisbtn2" })
+                    @Html.Label("rdoisbtn2", "作为功能键：");
+                    <ul>
+                        <li>
+                            按钮名称：
+                            @Html.TextBox("txtbtnName2", m.txtbtnName2);
+                            @Html.DropDownList("txtbtntp2", new SelectList(list, "value", "text", m.txtbtntp2));
+                            @Html.TextBox("txtbtnvalue2", m.txtbtnvalue2);
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    @Html.RadioButton("rdotp2", 1, m.rdotp2 == "1", new { id = "rdoismenu2" })
+                    @Html.Label("rdoismenu2", "作为父菜单：");
+                    <ul>
+                        <li>
+                            菜单名称：@Html.TextBox("txtmenuName2", m.txtmenuName2);
+                        </li>
+                        <li>
+                            子菜单(1)：
+                            菜单名称 @Html.TextBox("txtsubbtnName6", m.txtsubbtnName6);
+                            选择功能 @Html.DropDownList("txtsubbtntp6", new SelectList(list, "value", "text", m.txtsubbtntp6));
+                            @Html.TextBox("txtsubbtnvalue6", m.txtsubbtnvalue6);
+                        </li>
+                        <li>
+                            子菜单(2)：
+                            菜单名称 @Html.TextBox("txtsubbtnName7", m.txtsubbtnName7);
+                            选择功能 @Html.DropDownList("txtsubbtntp7", new SelectList(list, "value", "text", m.txtsubbtntp7));
+                            @Html.TextBox("txtsubbtnvalue7", m.txtsubbtnvalue7);
+                        </li>
+                        <li>
+                            子菜单(3)：
+                            菜单名称 @Html.TextBox("txtsubbtnName8", m.txtsubbtnName8);
+                            选择功能 @Html.DropDownList("txtsubbtntp8", new SelectList(list, "value", "text", m.txtsubbtntp8));
+                            @Html.TextBox("txtsubbtnvalue8", m.txtsubbtnvalue8);
+                        </li>
+                        <li>
+                            子菜单(4)：
+                            菜单名称 @Html.TextBox("txtsubbtnName9", m.txtsubbtnName9);
+                            选择功能 @Html.DropDownList("txtsubbtntp9", new SelectList(list, "value", "text", m.txtsubbtntp9));
+                            @Html.TextBox("txtsubbtnvalue9", m.txtsubbtnvalue9);
+                        </li>
+                        <li>
+                            子菜单(5)：
+                            菜单名称 @Html.TextBox("txtsubbtnName10", m.txtsubbtnName10);
+                            选择功能 @Html.DropDownList("txtsubbtntp10", new SelectList(list, "value", "text", m.txtsubbtntp10));
+                            @Html.TextBox("txtsubbtnvalue10", m.txtsubbtnvalue10);
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>
+                @Html.CheckBox("cbxEnable3", m.cbxEnable3, new { id = "cbxEnable3" });
+                @Html.Label("cbxEnable3", "启用菜单三");
+            </legend>
+            <ul>
+                <li>
+                    @Html.RadioButton("rdotp3", 0, m.rdotp3 == "0", new { id = "rdoisbtn3" })
+                    @Html.Label("rdoisbtn3", "作为功能键：");
+                    <ul>
+                        <li>
+                            按钮名称：
+                            @Html.TextBox("txtbtnName3", m.txtbtnName3);
+                            @Html.DropDownList("txtbtntp3", new SelectList(list, "value", "text", m.txtbtntp3));
+                            @Html.TextBox("txtbtnvalue3", m.txtbtnvalue3);
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    @Html.RadioButton("rdotp3", 1, m.rdotp3 == "1", new { id = "rdoismenu3" })
+                    @Html.Label("rdoismenu3", "作为父菜单：");
+                    <ul>
+                        <li>
+                            菜单名称：@Html.TextBox("txtmenuName3", m.txtmenuName3);
+                        </li>
+                        <li>
+                            子菜单(1)：
+                            菜单名称 @Html.TextBox("txtsubbtnName11", m.txtsubbtnName11);
+                            选择功能 @Html.DropDownList("txtsubbtntp11", new SelectList(list, "value", "text", m.txtsubbtntp11));
+                            @Html.TextBox("txtsubbtnvalue11", m.txtsubbtnvalue11);
+                        </li>
+                        <li>
+                            子菜单(2)：
+                            菜单名称 @Html.TextBox("txtsubbtnName12", m.txtsubbtnName12);
+                            选择功能 @Html.DropDownList("txtsubbtntp12", new SelectList(list, "value", "text", m.txtsubbtntp12));
+                            @Html.TextBox("txtsubbtnvalue12", m.txtsubbtnvalue12);
+                        </li>
+                        <li>
+                            子菜单(3)：
+                            菜单名称 @Html.TextBox("txtsubbtnName13", m.txtsubbtnName13);
+                            选择功能 @Html.DropDownList("txtsubbtntp13", new SelectList(list, "value", "text", m.txtsubbtntp13));
+                            @Html.TextBox("txtsubbtnvalue13", m.txtsubbtnvalue13);
+                        </li>
+                        <li>
+                            子菜单(4)：
+                            菜单名称 @Html.TextBox("txtsubbtnName14", m.txtsubbtnName14);
+                            选择功能 @Html.DropDownList("txtsubbtntp14", new SelectList(list, "value", "text", m.txtsubbtntp14));
+                            @Html.TextBox("txtsubbtnvalue14", m.txtsubbtnvalue14);
+                        </li>
+                        <li>
+                            子菜单(5)：
+                            菜单名称 @Html.TextBox("txtsubbtnName15", m.txtsubbtnName15);
+                            选择功能 @Html.DropDownList("txtsubbtntp15", new SelectList(list, "value", "text", m.txtsubbtntp15));
+                            @Html.TextBox("txtsubbtnvalue15", m.txtsubbtnvalue15);
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </fieldset>
+        <input type="submit" value="提交" />
+    </form>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $(":checkbox").click(function () {
+            menurefresh();
+        });
+
+        $(":radio").click(function () {
+            menurefresh();
+        });
+
+
+        menurefresh();
+    });
+
+    function menurefresh() {
+        $(":checkbox").each(function (i, obj) {
+            var cbx = $(obj);
+            if (cbx.is(':checked')) {
+                cbx.parent().parent().find("ul").show();
+            } else {
+                cbx.parent().parent().find("ul").hide();
+            }
+        });
+        $(":radio").each(function (i, obj) {
+            var rdo = $(obj);
+            if (rdo.is(':checked')) {
+                rdo.parent().find("ul").show();
+            } else {
+                rdo.parent().find("ul").hide();
+            }
+        });
+    }
+</script>
